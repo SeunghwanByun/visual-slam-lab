@@ -21,6 +21,6 @@ def estimate_relative_pose(points_a, points_b, K):
         raise RuntimeError("Essential matrix estimation failed")
 
     _, R, t, pose_mask = cv2.recoverPose(E, points_a, points_b, K, mask=mask)
-    inlier_count = int(pose_mask.sum() / 255)
+    inlier_count = int(np.count_nonzero(pose_mask))
     return R, t.reshape(3), inlier_count
 

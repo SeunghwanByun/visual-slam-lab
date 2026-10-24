@@ -1,0 +1,82 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "KITTI: Build playback (200 frames)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "src.viz.export_playback",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "args": ["--sequence", "00", "--max-frames", "200"]
+    },
+    {
+      "name": "KITTI VO: sequence 00, 50 frames",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "src.vo.run_kitti",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "env": {
+        "MPLCONFIGDIR": "${workspaceFolder}/.cache/matplotlib",
+        "XDG_CACHE_HOME": "${workspaceFolder}/.cache"
+      },
+      "args": [
+        "--sequence",
+        "00",
+        "--max-frames",
+        "50"
+      ]
+    },
+    {
+      "name": "Check KITTI dataset",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/check_kitti_dataset.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "env": {
+        "MPLCONFIGDIR": "${workspaceFolder}/.cache/matplotlib",
+        "XDG_CACHE_HOME": "${workspaceFolder}/.cache"
+      },
+      "args": [
+        "--sequence",
+        "00"
+      ]
+    },
+    {
+      "name": "KITTI VO: current file",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "env": {
+        "MPLCONFIGDIR": "${workspaceFolder}/.cache/matplotlib",
+        "XDG_CACHE_HOME": "${workspaceFolder}/.cache"
+      }
+    },
+    {
+      "name": "Inspect KITTI LiDAR frame",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/inspect_kitti_lidar.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "env": {
+        "MPLCONFIGDIR": "${workspaceFolder}/.cache/matplotlib",
+        "XDG_CACHE_HOME": "${workspaceFolder}/.cache"
+      },
+      "args": [
+        "--sequence",
+        "00",
+        "--frame",
+        "0"
+      ]
+    }
+  ]
+}
