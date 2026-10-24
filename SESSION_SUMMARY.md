@@ -1,5 +1,52 @@
 # Session Summary
 
+## Progress Through 2026-10-25
+
+This section supersedes the initial setup goals below. Explain in Korean and
+teach top-down: inspect system outputs before introducing component math.
+
+- Created a Python 3.11 `.venv` with uv and installed NumPy, OpenCV and Matplotlib.
+- Added VSCode interpreter and debug configurations for VO, dataset checks,
+  LiDAR inspection and playback export.
+- Added KITTI archive download, dataset validation and LiDAR scan inspection
+  scripts. The downloader supports Range requests but does not yet validate a
+  resumed response's status or Content-Range; use caution with interrupted files.
+- Consolidated grayscale sequences 00-21, calibration, timestamps and poses into
+  `data/kitti/dataset`. Image directories are real directories, not symlinks.
+  Removed duplicate Downloads folders and original ZIPs at the user's request.
+  See `LOCAL_DATA.md` for the local inventory. LiDAR data is not installed.
+- Ran sequence 00 for 200 frames and generated the trajectory plot.
+- Fixed pose inlier counting using `np.count_nonzero` rather than assuming
+  the OpenCV mask always contains 255 for accepted points.
+- Added offline HTML playback showing synchronized raw images, ORB keypoints,
+  accepted/rejected match displacement lines, and GT/estimated trajectories.
+  Controls include playback, pause, stepping, seeking and speed selection.
+- Verified playback in Chrome via Playwright: playback, seeking, frame stepping,
+  nonblank canvases, desktop/mobile screenshots and no horizontal overflow.
+
+Generate playback with:
+
+```bash
+.venv/bin/python -m src.viz.export_playback --sequence 00 --max-frames 200
+```
+
+Open `outputs/playback.html` directly in a browser. This file embeds the images
+and precomputed estimates; it is not a live VO computation benchmark.
+
+Current algorithm: ORB + cross-checked Hamming matching + essential matrix RANSAC
++ relative pose recovery + pose accumulation. This is a monocular VO baseline,
+not ORB-SLAM. It assigns unit translation per accepted frame; GT is metric.
+Consequently, the overlaid paths are not a metric accuracy evaluation and can
+diverge due to varying vehicle speed as well as estimation error. Playback holds
+the last position when pose recovery fails or has fewer than five inliers.
+There is no 3D map, bundle adjustment, loop closure or LiDAR odometry yet.
+
+Next proposed step: stereo triangulation using image_0/image_1 and temporal
+PnP + RANSAC to estimate metric motion, then compare against GT in playback.
+Stereo VO has been discussed but not implemented.
+
+Data, virtual environments, caches and generated outputs are excluded from Git.
+
 This file summarizes the prior Codex conversation that led to creating this repo, so a new session can resume with the right context.
 
 ## Original Hardware Issue
